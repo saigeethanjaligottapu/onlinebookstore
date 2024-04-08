@@ -57,8 +57,11 @@ public class BookServiceImpl implements BookService {
             }
         } catch (SQLException e) {
 
+        } finally {
+            if (ps != null)  ps.close();
         }
-        return book;
+    }return book;
+
     }
 
     @Override
