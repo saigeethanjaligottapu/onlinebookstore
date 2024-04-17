@@ -55,8 +55,16 @@ public class BookServiceImpl implements BookService {
 
                 book = new Book(bCode, bName, bAuthor, bPrice, bQty);
             }
+
+
         } catch (SQLException e) {
 
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e){
+
+            }
         }
         return book;
     }
@@ -82,6 +90,12 @@ public class BookServiceImpl implements BookService {
             }
         } catch (SQLException e) {
 
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e){
+
+            }
         }
         return books;
     }
@@ -100,6 +114,12 @@ public class BookServiceImpl implements BookService {
         } catch (Exception e) {
             response += " : " + e.getMessage();
             e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e){
+
+            }
         }
         return response;
     }
@@ -122,6 +142,12 @@ public class BookServiceImpl implements BookService {
         } catch (Exception e) {
             responseCode += " : " + e.getMessage();
             e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e){
+
+            }
         }
         return responseCode;
     }
@@ -139,6 +165,12 @@ public class BookServiceImpl implements BookService {
         } catch (Exception e) {
             responseCode += " : " + e.getMessage();
             e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e){
+
+            }
         }
         return responseCode;
     }
@@ -166,6 +198,12 @@ public class BookServiceImpl implements BookService {
             }
         } catch (SQLException e) {
 
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e){
+
+            }
         }
         return books;
     }
@@ -186,6 +224,12 @@ public class BookServiceImpl implements BookService {
         } catch (Exception e) {
             responseCode += " : " + e.getMessage();
             e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e){
+
+            }
         }
         return responseCode;
     }
