@@ -1,4 +1,4 @@
 FROM openjdk
-EXPOSE 8080
-ADD  	targesst/onlinebookstore.war  onlinebookstore.war
+EXPOSE 8083
+ADD  	target/onlinebookstore.war  onlinebookstore.war
 ENTRYPOINT ["java","-jar","/onlinebookstore.war"] 
