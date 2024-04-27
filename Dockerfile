@@ -1,4 +1,4 @@
-FROM openjdk
-EXPOSE 8083
-ADD  	target/onlinebookstore.war  onlinebookstore.war
-ENTRYPOINT ["java","-jar","/onlinebookstore.war"] 
+FROM openjdk:11
+ARG JAR_FILE=target/*.war
+COPY ${WAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
