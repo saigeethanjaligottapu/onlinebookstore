@@ -58,6 +58,30 @@ pipeline {
               sh 'mvn package'  
             }
         }
+        stage('Dokcer Push and Tag') {
+            steps {
+              script{
+                  withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                      sh 'docker build -t onlinebooks .'
+                      sh 'docker tag onlinebooks 17rj/onlinebookmart'
+                }
+              }
+            }
+        }
+        stage('Image Scan') {
+            steps {
+              sh 'trivy image --format table -o image-report.html 17rj/onlinebookmart'  
+            }
+        }
+        stage('Push Image') {
+            steps {
+              script{
+                  withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                    sh 'docker push 17rj/onlinebookmart'
+                }
+              }  
+            }
+        }
         stage('Deploy Tomcat') {
             steps {
                sh "cp  /var/lib/jenkins/workspace/tomcat/target/onlinebookstore.war  /opt/apache-tomcat-9.0.65/webapps/ "
