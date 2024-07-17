@@ -1,71 +1,63 @@
 package com.bittercode.model;
 
-import java.io.Serializable;
+import java.util.Objects;
 
-public class Address implements Serializable {
+public class Address {
+    private final String addressLine1;
+    private final String addressLine2;
+    private final String city;
+    private final String state;
+    private final String country;
+    private final long pinCode;
+    private final String phone;
 
-    private String addressLine1;
-    private String addressLine2;
-    private String city;
-    private String state;
-    private String country;
-    private long pinCode;
-    private String phone;
-
-    public String getAddressLine1() {
-        return addressLine1;
-    }
-
-    public void setAddressLine1(String addressLine1) {
+    public Address(String addressLine1, String addressLine2, String city, String state, String country, long pinCode, String phone) {
         this.addressLine1 = addressLine1;
-    }
-
-    public String getAddressLine2() {
-        return addressLine2;
-    }
-
-    public void setAddressLine2(String addressLine2) {
         this.addressLine2 = addressLine2;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
         this.state = state;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
         this.country = country;
-    }
-
-    public long getPinCode() {
-        return pinCode;
-    }
-
-    public void setPinCode(long pinCode) {
         this.pinCode = pinCode;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
         this.phone = phone;
     }
 
+    // Additional methods for better functionality
+    public String getAddressSummary() {
+        return String.format("%s, %s, %s, %s, %s", addressLine1, addressLine2, city, state, country);
+    }
+
+    // Implementing equals() and hashCode() for better object comparison
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return pinCode == address.pinCode &&
+                Objects.equals(addressLine1, address.addressLine1) &&
+                Objects.equals(addressLine2, address.addressLine2) &&
+                Objects.equals(city, address.city) &&
+                Objects.equals(state, address.state) &&
+                Objects.equals(country, address.country) &&
+                Objects.equals(phone, address.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(addressLine1, addressLine2, city, state, country, pinCode, phone);
+    }
+
+    // Additional methods as needed
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "addressLine1='" + addressLine1 + '\'' +
+                ", addressLine2='" + addressLine2 + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", country='" + country + '\'' +
+                ", pinCode=" + pinCode +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }
