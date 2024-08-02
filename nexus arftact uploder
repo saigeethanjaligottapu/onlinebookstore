@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('git checkot') {
+            steps {
+                git 'https://github.com/shashirajraja/onlinebookstore.git'
+            }
+        } 
+        stage('build') { 
+            steps {
+                sh 'mvn clean package'
+            } 
+        } 
+        stage('artifact') {
+            steps { 
+                nexusArtifactUploader artifacts: [[artifactId: 'onlinebookstore', classifier: '', file: 'target/onlinebookstore.war', type: 'war']], credentialsId: 'nexus-cre', groupId: 'onlinebookstore', nexusUrl: '18.207.112.159:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '0.0.1-SNAPSHOT'
+            }
+        }
+    }
+}
+
