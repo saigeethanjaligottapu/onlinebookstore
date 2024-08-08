@@ -63,7 +63,7 @@ public class BuyBooksServlet extends HttpServlet {
                                                                                                           // to bcode
                         "				</td>");
                 pw.println("<td>" + bCode + "</td>");
-                pw.println("<td>" + bName + "</td>");
+                pw.println("<td>" + HTMLUtils.escapeHtml(bName) + "</td>");
                 pw.println("<td>" + bAuthor + "</td>");
                 pw.println("<td>" + bPrice + "</td>");
                 pw.println("<td>" + bAvl + "</td>");
