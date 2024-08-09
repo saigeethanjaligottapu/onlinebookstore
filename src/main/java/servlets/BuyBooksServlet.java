@@ -50,7 +50,7 @@ public class BuyBooksServlet extends HttpServlet {
                     "			</tr>");
             int i = 0;
             for (Book book : books) {
-                String bCode = HTMLUtils.escapeHtml(book.getBarcode()); // Using HTMLUtils to escape HTML
+                String bCode = book.getBarcode(); // Using HTMLUtils to escape HTML
                 String bName = HTMLUtils.escapeHtml(book.getName()); // Using HTMLUtils to escape HTML
                 String bAuthor = "Author";
                 //String bAuthor = HTMLUtils.escapeHtml(book.getAuthor()); // Using HTMLUtils to escape HTML
