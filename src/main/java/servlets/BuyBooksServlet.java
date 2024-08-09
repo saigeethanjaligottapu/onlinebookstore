@@ -87,11 +87,11 @@ public class BuyBooksServlet extends HttpServlet {
                 return null;
             }
             return input.replaceAll("&", "&amp;")
-                        .replaceAll("<", "&lt;")
-                        .replaceAll(">", "&gt;")
-                        .replaceAll("\"", "&quot;")
-                        .replaceAll("'", "&#x27;")
-                        .replaceAll("/", "&#x2F;");
+                    .replaceAll("<", "&lt;")
+                    .replaceAll(">", "&gt;")
+                    .replaceAll("'", "&#x27;")
+                    .replaceAll("/", "&#x2F;")
+                    .replaceAll("\"", "&quot;");
         }
     }
 }
