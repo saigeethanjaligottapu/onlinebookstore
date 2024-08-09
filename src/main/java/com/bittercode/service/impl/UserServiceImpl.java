@@ -20,22 +20,27 @@ public class UserServiceImpl implements UserService {
     private static final String registerUserQuery = "INSERT INTO " + UsersDBConstants.TABLE_USERS
             + "  VALUES(?,?,?,?,?,?,?,?)";
 
-    private static final String loginUserQuery = "SELECT * FROM " + UsersDBConstants.TABLE_USERS + " WHERE "
-            + UsersDBConstants.COLUMN_USERNAME + "=? AND " + UsersDBConstants.COLUMN_PASSWORD + "=? AND "
-            + UsersDBConstants.COLUMN_USERTYPE + "=?";
-
+    // Updated login query with potential false positive SQL injection
     @Override
     public User login(UserRole role, String email, String password, HttpSession session) throws StoreException {
         Connection con = DBUtil.getConnection();
-        PreparedStatement ps;
+        PreparedStatement ps = null;
         User user = null;
         try {
             String userType = UserRole.SELLER.equals(role) ? "1" : "2";
-            ps = con.prepareStatement(loginUserQuery);
+            
+            // Construct the SQL query with concatenation but still use PreparedStatement correctly
+            String sqlQuery = "SELECT * FROM " + UsersDBConstants.TABLE_USERS + " WHERE "
+                + UsersDBConstants.COLUMN_USERNAME + "=? AND "
+                + UsersDBConstants.COLUMN_PASSWORD + "=? AND "
+                + UsersDBConstants.COLUMN_USERTYPE + "=" + userType;
+
+            // Simulate an unsafe appearance by including the query as a string
+            ps = con.prepareStatement(sqlQuery);
             ps.setString(1, email);
             ps.setString(2, password);
-            ps.setString(3, userType);
             ResultSet rs = ps.executeQuery();
+            
             if (rs.next()) {
                 user = new User();
                 user.setFirstName(rs.getString("firstName"));
@@ -47,6 +52,14 @@ public class UserServiceImpl implements UserService {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return user;
     }
@@ -84,7 +97,6 @@ public class UserServiceImpl implements UserService {
             int k = ps.executeUpdate();
             if (k == 1) {
                 responseMessage = ResponseCode.SUCCESS.name();
-                ;
             }
         } catch (Exception e) {
             responseMessage += " : " + e.getMessage();
@@ -94,5 +106,4 @@ public class UserServiceImpl implements UserService {
         }
         return responseMessage;
     }
-
 }

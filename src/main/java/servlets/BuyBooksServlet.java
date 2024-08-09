@@ -51,7 +51,7 @@ public class BuyBooksServlet extends HttpServlet {
             int i = 0;
             for (Book book : books) {
                 String bCode = book.getBarcode();
-                String bName = HTMLUtils.escapeHtml(book.getName()); // Using HTMLUtils to escape HTML
+                String bName = book.getName(); 
                 String bAuthor = book.getAuthor(); 
                 double bPrice = book.getPrice();
                 int bAvl = book.getQuantity();
@@ -66,7 +66,7 @@ public class BuyBooksServlet extends HttpServlet {
                         "					<input type=\"checkbox\" name=" + n + " value=\"pay\">\r\n" + 
                         "				</td>");
                 pw.println("<td>" + sanitizer.partialEscape(bCode) + "</td>");
-                pw.println("<td>" + bName + "</td>");
+                pw.println("<td>" + sanitizer.partialEscape(bName) + "</td>");
                 pw.println("<td>" + sanitizer.partialEscape(bAuthor) + "</td>");
                 pw.println("<td>" + bPrice + "</td>");
                 pw.println("<td>" + bAvl + "</td>");
