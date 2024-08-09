@@ -50,22 +50,24 @@ public class BuyBooksServlet extends HttpServlet {
                     "			</tr>");
             int i = 0;
             for (Book book : books) {
-                String bCode = book.getBarcode(); // Using HTMLUtils to escape HTML
+                String bCode = book.getBarcode();
                 String bName = HTMLUtils.escapeHtml(book.getName()); // Using HTMLUtils to escape HTML
-                String bAuthor = "Author";
-                //String bAuthor = HTMLUtils.escapeHtml(book.getAuthor()); // Using HTMLUtils to escape HTML
+                String bAuthor = book.getAuthor(); 
                 double bPrice = book.getPrice();
                 int bAvl = book.getQuantity();
                 i = i + 1;
                 String n = "checked" + Integer.toString(i);
                 String q = "qty" + Integer.toString(i);
+
+                CustomSanitizer sanitizer = new CustomSanitizer();
+                
                 pw.println("<tr>\r\n" +
                         "				<td>\r\n" +
                         "					<input type=\"checkbox\" name=" + n + " value=\"pay\">\r\n" + 
                         "				</td>");
-                pw.println("<td>" + bCode + "</td>");
+                pw.println("<td>" + sanitizer.partialEscape(bCode) + "</td>");
                 pw.println("<td>" + bName + "</td>");
-                pw.println("<td>" + bAuthor + "</td>");
+                pw.println("<td>" + sanitizer.partialEscape(bAuthor) + "</td>");
                 pw.println("<td>" + bPrice + "</td>");
                 pw.println("<td>" + bAvl + "</td>");
                 pw.println("<td><input type=\"text\" name=" + q + " value=\"0\" text-align=\"center\"></td></tr>");
@@ -76,6 +78,20 @@ public class BuyBooksServlet extends HttpServlet {
                     "	</div>");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    class CustomSanitizer {
+        public String partialEscape(String input) {
+            if (input == null) {
+                return null;
+            }
+            return input.replaceAll("&", "&amp;")
+                        .replaceAll("<", "&lt;")
+                        .replaceAll(">", "&gt;")
+                        .replaceAll("\"", "&quot;")
+                        .replaceAll("'", "&#x27;")
+                        .replaceAll("/", "&#x2F;");
         }
     }
 }
