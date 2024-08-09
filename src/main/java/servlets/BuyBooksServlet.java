@@ -17,6 +17,8 @@ import com.bittercode.service.BookService;
 import com.bittercode.service.impl.BookServiceImpl;
 import com.bittercode.util.StoreUtil;
 
+import com.bittercode.util.HTMLUtils;
+
 public class BuyBooksServlet extends HttpServlet {
     BookService bookService = new BookServiceImpl();
 
@@ -48,9 +50,9 @@ public class BuyBooksServlet extends HttpServlet {
                     "			</tr>");
             int i = 0;
             for (Book book : books) {
-                String bCode = book.getBarcode();
-                String bName = book.getName();
-                String bAuthor = book.getAuthor();
+                String bCode = HTMLUtils.escapeHtml(book.getBarcode()); // Using HTMLUtils to escape HTML
+                String bName = HTMLUtils.escapeHtml(book.getName()); // Using HTMLUtils to escape HTML
+                String bAuthor = HTMLUtils.escapeHtml(book.getAuthor()); // Using HTMLUtils to escape HTML
                 double bPrice = book.getPrice();
                 int bAvl = book.getQuantity();
                 i = i + 1;
@@ -58,12 +60,10 @@ public class BuyBooksServlet extends HttpServlet {
                 String q = "qty" + Integer.toString(i);
                 pw.println("<tr>\r\n" +
                         "				<td>\r\n" +
-                        "					<input type=\"checkbox\" name=" + n + " value=\"pay\">\r\n" + // Value is
-                                                                                                          // made equal
-                                                                                                          // to bcode
+                        "					<input type=\"checkbox\" name=" + n + " value=\"pay\">\r\n" + 
                         "				</td>");
                 pw.println("<td>" + bCode + "</td>");
-                pw.println("<td>" + HTMLUtils.escapeHtml(bName) + "</td>");
+                pw.println("<td>" + bName + "</td>");
                 pw.println("<td>" + bAuthor + "</td>");
                 pw.println("<td>" + bPrice + "</td>");
                 pw.println("<td>" + bAvl + "</td>");
@@ -73,11 +73,8 @@ public class BuyBooksServlet extends HttpServlet {
             pw.println("</table>\r\n" + "<input type=\"submit\" value=\" PAY NOW \">" + "<br/>" +
                     "	</form>\r\n" +
                     "	</div>");
-            // pw.println("<div class=\"tab\"><a href=\"AddBook.html\">Add More
-            // Books</a></div>");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }
