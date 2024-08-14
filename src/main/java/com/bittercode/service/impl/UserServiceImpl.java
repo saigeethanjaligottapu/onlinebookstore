@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private static final String registerUserQuery = "INSERT INTO " + UsersDBConstants.TABLE_USERS
             + "  VALUES(?,?,?,?,?,?,?,?)";
-
+  
     @Override
     public User login(UserRole role, String email, String password, HttpSession session) throws StoreException {
         Connection con = DBUtil.getConnection();

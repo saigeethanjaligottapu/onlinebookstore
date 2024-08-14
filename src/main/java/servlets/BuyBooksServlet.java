@@ -17,6 +17,8 @@ import com.bittercode.service.BookService;
 import com.bittercode.service.impl.BookServiceImpl;
 import com.bittercode.util.StoreUtil;
 
+import com.bittercode.util.HTMLUtils;
+
 public class BuyBooksServlet extends HttpServlet {
     BookService bookService = new BookServiceImpl();
 
@@ -49,22 +51,23 @@ public class BuyBooksServlet extends HttpServlet {
             int i = 0;
             for (Book book : books) {
                 String bCode = book.getBarcode();
-                String bName = book.getName();
-                String bAuthor = book.getAuthor();
+                String bName = book.getName(); 
+                String bAuthor = book.getAuthor(); 
                 double bPrice = book.getPrice();
                 int bAvl = book.getQuantity();
                 i = i + 1;
                 String n = "checked" + Integer.toString(i);
                 String q = "qty" + Integer.toString(i);
+
+                CustomSanitizer sanitizer = new CustomSanitizer();
+                
                 pw.println("<tr>\r\n" +
                         "				<td>\r\n" +
-                        "					<input type=\"checkbox\" name=" + n + " value=\"pay\">\r\n" + // Value is
-                                                                                                          // made equal
-                                                                                                          // to bcode
+                        "					<input type=\"checkbox\" name=" + n + " value=\"pay\">\r\n" + 
                         "				</td>");
-                pw.println("<td>" + bCode + "</td>");
-                pw.println("<td>" + bName + "</td>");
-                pw.println("<td>" + bAuthor + "</td>");
+                pw.println("<td>" + sanitizer.partialEscape(bCode) + "</td>");
+                pw.println("<td>" + sanitizer.partialEscape(bName) + "</td>");
+                pw.println("<td>" + sanitizer.partialEscape(bAuthor) + "</td>");
                 pw.println("<td>" + bPrice + "</td>");
                 pw.println("<td>" + bAvl + "</td>");
                 pw.println("<td><input type=\"text\" name=" + q + " value=\"0\" text-align=\"center\"></td></tr>");
@@ -73,11 +76,22 @@ public class BuyBooksServlet extends HttpServlet {
             pw.println("</table>\r\n" + "<input type=\"submit\" value=\" PAY NOW \">" + "<br/>" +
                     "	</form>\r\n" +
                     "	</div>");
-            // pw.println("<div class=\"tab\"><a href=\"AddBook.html\">Add More
-            // Books</a></div>");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    class CustomSanitizer {
+        public String partialEscape(String input) {
+            if (input == null) {
+                return null;
+            }
+            return input.replaceAll("&", "&amp;")
+                    .replaceAll("<", "&lt;")
+                    .replaceAll(">", "&gt;")
+                    .replaceAll("'", "&#x27;")
+                    .replaceAll("/", "&#x2F;")
+                    .replaceAll("\"", "&quot;");
+        }
+    }
 }

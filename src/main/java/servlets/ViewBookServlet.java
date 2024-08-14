@@ -15,6 +15,7 @@ import com.bittercode.model.Book;
 import com.bittercode.model.UserRole;
 import com.bittercode.service.BookService;
 import com.bittercode.service.impl.BookServiceImpl;
+import com.bittercode.util.HTMLUtils;
 import com.bittercode.util.StoreUtil;
 
 public class ViewBookServlet extends HttpServlet {
@@ -73,6 +74,19 @@ public class ViewBookServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter pw = response.getWriter();
+        response.setContentType("text/html");
+
+        String bookName = request.getParameter("bookName");
+
+        // Simulate a false positive by making it look like the input is not escaped
+        pw.println("<html><body>");
+        pw.println("<h1>Book Name: " + HTMLUtils.escapeHtml(bookName) + "</h1>"); // Properly escaped
+        pw.println("</body></html>");
     }
 
     public String addBookToCard(HttpSession session, Book book) {
